@@ -1,0 +1,5 @@
+---
+- name: '{{ item.name }} git commit "{{ action.message }}"'
+  shell: 
+    cmd: 'git -C {{ item.path }} commit -m "{{ action.message }}" || true'
+  # ignore_errors: true

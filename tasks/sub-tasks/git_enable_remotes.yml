@@ -1,0 +1,50 @@
+---
+# - name: "{{ item.name }} git remote remove {{ remote.name }}"
+#   shell:
+#     cmd: 'git -C {{ item.path }} remote remove {{ remote.name }} || echo 0'
+#   when: remote.state == "absent"
+
+# - name: "{{ item.name }} git remote add {{ remote.name }} {{ remote.url }}"
+#   shell:
+#     cmd: 'git -C {{ item.path }} remote add {{ remote.name }} {{ remote.url }} || echo 0'
+#   when: remote.state == "present"
+
+
+# - name: "{{ item.name }} git remote add {{ remote.name }}"
+- block:
+    - name: "{{ item.name }} git remote add {{ remote.name }} url"
+      community.general.git_config:
+        name: "remote.{{ remote.name }}.url"
+        # value: "{{ remote.url }}"
+        state: "absent"
+        scope: local
+        repo: "{{ item.path }}"
+
+    - name: "{{ item.name }} git remote add {{ remote.name }} fetch settings"
+      community.general.git_config:
+        name: "remote.{{ remote.name }}.fetch"
+        # value: "+refs/heads/*:refs/remotes/origin/*"
+        state: "absent"
+        scope: local
+        repo: "{{ item.path }}"
+  when: remote.state == "absent"
+
+
+# - name: "{{ item.name }} git remote remove {{ remote.name }}"
+- block:
+    - name: "{{ item.name }} git remote remove {{ remote.name }} url"
+      community.general.git_config:
+        name: "remote.{{ remote.name }}.url"
+        value: "{{ remote.url }}"
+        state: "present"
+        scope: local
+        repo: "{{ item.path }}"
+
+    - name: "{{ item.name }} git remote remove {{ remote.name }} fetch settings"
+      community.general.git_config:
+        name: "remote.{{ remote.name }}.fetch"
+        value: "+refs/heads/*:refs/remotes/{{ remote.name }}/*"
+        state: "present"
+        scope: local
+        repo: "{{ item.path }}"
+  when: remote.state == "present"

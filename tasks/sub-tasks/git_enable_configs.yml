@@ -1,0 +1,24 @@
+---
+- name: "{{ item.name }} set git configs"
+  community.general.git_config:
+    name: "{{ config.name }}"
+    value: "{{ config.value }}"
+    state: "{{ config.state }}"
+    scope: local
+    repo: "{{ item.path }}"
+  loop: "{{ item.configs | flatten }}"
+  loop_control:
+    loop_var: config
+  when: 
+    - stat_git.stat.exists | bool
+    - item.configs is iterable
+
+
+- name: "{{ item.name }} set git ignores"
+  copy:
+    content: "{{ item.ignores }}"
+    dest: "{{ item.path }}/.gitignore"
+    owner: root
+    group: root
+    mode: '0644'
+  when: stat_path.stat.exists | bool

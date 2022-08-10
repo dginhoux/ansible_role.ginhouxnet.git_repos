@@ -1,0 +1,5 @@
+---
+- name: '{{ item.name }} "git {{ action.command }}"'
+  shell: 
+    cmd: 'git -C {{ item.path }} {{ action.command }}'
+  # ignore_errors: true

@@ -1,0 +1,44 @@
+---
+git_repos_install_binary: true
+
+
+git_repos:
+  - name: ansible
+    path: /ansible
+    state: present
+    make_init: true
+    make_conf_options: true
+    make_conf_remotes: true
+    make_actions: true
+    ignores: |
+      **-data
+      **-data?
+      **-logs
+    configs:
+      - name: user.name
+        value: git
+        state: present
+      - name: user.email
+        value: git@ginhoux.net
+        state: present
+      - name: core.compression
+        value: 0
+        state: present
+      - name: core.sharedrepository
+        value: all
+        state: present
+    remotes:
+      - name: origin
+        url: https://xxxxxxxxxxxxxxxxxx@git.ginhoux.net/ansible.git
+        state: present
+    actions:
+      - action: add
+        conetnt: "."
+      - action: commit
+        message: "ok"
+      - action: push
+        to: origin master
+      - action: pull
+        from: origin master
+      - action: command
+        command: "fetch --all"

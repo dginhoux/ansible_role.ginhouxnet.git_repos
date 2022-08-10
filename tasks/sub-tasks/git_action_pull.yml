@@ -1,0 +1,5 @@
+---
+- name: "{{ item.name }} git pull from {{ action.from }}"
+  shell: 
+    cmd: 'git -C {{ item.path }} pull {{ action.from }}'
+  # ignore_errors: true
