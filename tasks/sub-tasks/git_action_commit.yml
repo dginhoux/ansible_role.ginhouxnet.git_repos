@@ -1,5 +1,8 @@
 ---
 - name: '{{ item.name }} git commit "{{ action.message }}"'
   shell: 
-    cmd: 'git -C {{ item.path }} commit -m "{{ action.message }}" || true'
+    # cmd: 'git -C {{ item.path }} commit -m "{{ action.message }}" || true'
+    cmd: 'git -C {{ item.path }} commit --allow-empty -m "{{ action.message }}" '
+    # cmd: 'git -C {{ item.path }} diff-index --quiet HEAD  || git -C {{ item.path }} commit -m "{{ action.message }}" '
   # ignore_errors: true
+  ignore_errors: "{{ action.ignore_error | default('false') | bool }}"

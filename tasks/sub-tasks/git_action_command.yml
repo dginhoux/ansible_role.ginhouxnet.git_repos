@@ -3,3 +3,4 @@
   shell: 
     cmd: 'git -C {{ item.path }} {{ action.command }}'
   # ignore_errors: true
+  ignore_errors: "{{ action.ignore_error | default('false') | bool }}"

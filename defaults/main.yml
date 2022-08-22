@@ -33,12 +33,17 @@ git_repos:
         state: present
     actions:
       - action: add
-        conetnt: "."
+        content: "."
+        ignore_error: false
       - action: commit
         message: "ok"
+        ignore_error: false
       - action: push
         to: origin master
+        # ignore_error: true
       - action: pull
         from: origin master
+        # ignore_error: false
       - action: command
         command: "fetch --all"
+        ignore_error: true
