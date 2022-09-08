@@ -1,7 +1,7 @@
 ---
 
 galaxy_info:
-  role_name: ginhouxnet.git_repos
+  role_name: git_repos
   author: dginhoux
   description: install, configure git repos and launch actions like add, commit, pull, push, etc...
   company: ginhouxnet
