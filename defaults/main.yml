@@ -1,7 +1,6 @@
 ---
 git_repos_install_binary: true
 
-
 git_repos:
   - name: ansible
     path: /ansible

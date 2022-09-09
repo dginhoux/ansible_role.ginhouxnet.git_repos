@@ -4,10 +4,10 @@
 #   loop: "{{ item.actions | flatten }}"
 #   loop_control:
 #     loop_var: action
-#   when: 
+#   when:
 #     - stat_git.stat.exists | bool
 #     - item.actions is iterable
-    
+
 - name: "{{ item.name }} git commit"
   include_tasks:
     file: "tasks/sub-tasks/git_action_{{ action.action }}.yml"
@@ -15,16 +15,14 @@
   loop_control:
     loop_var: action
   # ignore_errors: "{{ action.ignore_error | default('false') | bool }}"
-  when: 
+  when:
     - stat_git.stat.exists | bool
     - item.actions is iterable
-
-
 # - name: "{{ item.name }} git command"
 #   include_tasks: "git_command.yml"
 #   loop: "{{ item.actions | flatten }}"
 #   loop_control:
 #     loop_var: action
-#   when: 
+#   when:
 #     - stat_git.stat.exists | bool
 #     - item.actions is iterable

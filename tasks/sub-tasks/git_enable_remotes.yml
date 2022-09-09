@@ -9,7 +9,6 @@
 #     cmd: 'git -C {{ item.path }} remote add {{ remote.name }} {{ remote.url }} || echo 0'
 #   when: remote.state == "present"
 
-
 # - name: "{{ item.name }} git remote add {{ remote.name }}"
 - block:
     - name: "{{ item.name }} git remote add {{ remote.name }} url"
@@ -28,7 +27,6 @@
         scope: local
         repo: "{{ item.path }}"
   when: remote.state == "absent"
-
 
 # - name: "{{ item.name }} git remote remove {{ remote.name }}"
 - block:
