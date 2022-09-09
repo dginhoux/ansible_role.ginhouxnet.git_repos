@@ -14,7 +14,7 @@ This playbooks just manage git, it's not designed to run any others pre/post tas
 Requirements
 ------------
 
-This ansible role will only run on identified OS defined on meta/main.yml
+This role is built to only run on platforms defined in `meta/main.yml`
 
 
 Role Variables
@@ -73,8 +73,7 @@ git_repos:
 Dependencies
 ------------
 
-
-
+none
 
 Example Playbook
 ----------------
@@ -90,4 +89,4 @@ BSD
 Author Information
 ------------------
 
-Dany GINHOUX
+https://github.com/dginhoux/
