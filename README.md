@@ -20,7 +20,7 @@ This role is built to only run on platforms defined in `meta/main.yml`
 Role Variables
 --------------
 
-It's just a simple list like : 
+
 
 ```
 git_repos_install_binary: true
@@ -74,6 +74,7 @@ Dependencies
 ------------
 
 none
+
 
 Example Playbook
 ----------------
