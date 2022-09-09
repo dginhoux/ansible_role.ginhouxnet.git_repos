@@ -22,7 +22,7 @@ Role Variables
 
 
 
-```
+```yaml
 git_repos_install_binary: true
 
 
