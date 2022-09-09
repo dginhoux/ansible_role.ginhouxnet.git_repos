@@ -1,4 +1,4 @@
-ginhouxnet.git_repos
+Ansible Role : dginhoux.git_repos
 =========
 
 This ansible role is used to manage git on specified local folder.
