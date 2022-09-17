@@ -14,7 +14,7 @@
     - item.configs is iterable
 
 - name: "{{ item.name }} set git ignores"
-  copy:
+  ansible.builtin.copy:
     content: "{{ item.ignores }}"
     dest: "{{ item.path }}/.gitignore"
     owner: root

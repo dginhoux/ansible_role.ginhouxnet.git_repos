@@ -1,11 +1,11 @@
 ---
 # - name: "{{ item.name }} git remote remove {{ remote.name }}"
-#   shell:
+#   ansible.builtin.shell:
 #     cmd: 'git -C {{ item.path }} remote remove {{ remote.name }} || echo 0'
 #   when: remote.state == "absent"
 
 # - name: "{{ item.name }} git remote add {{ remote.name }} {{ remote.url }}"
-#   shell:
+#   ansible.builtin.shell:
 #     cmd: 'git -C {{ item.path }} remote add {{ remote.name }} {{ remote.url }} || echo 0'
 #   when: remote.state == "present"
 

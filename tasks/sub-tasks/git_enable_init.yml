@@ -1,6 +1,6 @@
 ---
 - name: "{{ item.name }} git init"
-  shell:
+  ansible.builtin.shell:
     cmd: "git -C {{ item.path }} init"
   when:
     - stat_path.stat.exists | bool
@@ -8,6 +8,6 @@
   # ignore_errors: true
 
 - name: "{{ item.name }} get path git status"
-  stat:
+  ansible.builtin.stat:
     path: "{{ item.path }}/.git"
   register: stat_git

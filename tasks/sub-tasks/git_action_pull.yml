@@ -1,6 +1,6 @@
 ---
 - name: "{{ item.name }} git pull from {{ action.from }}"
-  shell:
+  ansible.builtin.shell:
     cmd: "git -C {{ item.path }} pull {{ action.from }}"
   # ignore_errors: true
   ignore_errors: "{{ action.ignore_error | default('false') | bool }}"

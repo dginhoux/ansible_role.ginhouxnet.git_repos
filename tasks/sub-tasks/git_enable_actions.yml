@@ -1,5 +1,5 @@
 ---
-# - debug:
+# - ansible.builtin.debug:
 #     var: "{{ action.ignore_error | default('false') }}"
 #   loop: "{{ item.actions | flatten }}"
 #   loop_control:
@@ -9,7 +9,7 @@
 #     - item.actions is iterable
 
 - name: "{{ item.name }} git commit"
-  include_tasks:
+  ansible.builtin.include_tasks:
     file: "tasks/sub-tasks/git_action_{{ action.action }}.yml"
   loop: "{{ item.actions | flatten }}"
   loop_control:
@@ -19,7 +19,7 @@
     - stat_git.stat.exists | bool
     - item.actions is iterable
 # - name: "{{ item.name }} git command"
-#   include_tasks: "git_command.yml"
+#   ansible.builtin.include_tasks: "git_command.yml"
 #   loop: "{{ item.actions | flatten }}"
 #   loop_control:
 #     loop_var: action

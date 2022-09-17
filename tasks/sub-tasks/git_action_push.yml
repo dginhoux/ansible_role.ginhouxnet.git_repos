@@ -1,6 +1,6 @@
 ---
 - name: "{{ item.name }} git push to {{ action.to }}"
-  shell:
+  ansible.builtin.shell:
     cmd: "git -C {{ item.path }} push {{ action.to }}"
   # ignore_errors: true
   ignore_errors: "{{ action.ignore_error | default('false') | bool }}"
