@@ -1,0 +1,24 @@
+---
+- name: ensure git is installed
+  ansible.builtin.package:
+    name: git
+    state: present
+  when: git_repos_install_binary | bool
+
+- name: start git enable tasks
+  ansible.builtin.include_tasks:
+    file: tasks/sub-tasks/git_enable.yml
+  loop: "{{ git_repos | flatten }}"
+  when: >
+    git_repos is iterable
+    and
+    item.state == "present"
+
+- name: start git disable tasks
+  ansible.builtin.include_tasks:
+    file: tasks/sub-tasks/git_disable.yml
+  loop: "{{ git_repos | flatten }}"
+  when: >
+    git_repos is iterable
+    and
+    item.state == "absent"
