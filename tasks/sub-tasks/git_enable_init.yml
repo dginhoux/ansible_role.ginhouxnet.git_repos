@@ -1,13 +1,13 @@
 ---
-- name: "{{ item.name }} git init"
+- name: "[{{ ansible_loop.index }}/{{ ansible_loop.length }}] {{ repo.name }} git init"
   ansible.builtin.shell:
-    cmd: "git -C {{ item.path }} init"
+    cmd: "git -C {{ repo.path }} init"
   when:
     - stat_path.stat.exists | bool
     - not stat_git.stat.exists | bool
   # ignore_errors: true
 
-- name: "{{ item.name }} get path git status"
+- name: "[{{ ansible_loop.index }}/{{ ansible_loop.length }}] {{ repo.name }} get path git status"
   ansible.builtin.stat:
-    path: "{{ item.path }}/.git"
+    path: "{{ repo.path }}/.git"
   register: stat_git

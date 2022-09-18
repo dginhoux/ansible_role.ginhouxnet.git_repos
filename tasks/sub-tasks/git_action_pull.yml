@@ -1,6 +1,6 @@
 ---
-- name: "{{ item.name }} git pull from {{ action.from }}"
+- name: "[{{ ansible_loop.index }}/{{ ansible_loop.length }}] {{ repo.name }} git pull from {{ action.from }}"
   ansible.builtin.shell:
-    cmd: "git -C {{ item.path }} pull {{ action.from }}"
+    cmd: "git -C {{ repo.path }} pull {{ action.from }}"
   # ignore_errors: true
   ignore_errors: "{{ action.ignore_error | default('false') | bool }}"

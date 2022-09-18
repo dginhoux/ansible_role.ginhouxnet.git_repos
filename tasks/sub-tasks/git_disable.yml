@@ -1,16 +1,16 @@
 ---
-# - name: "{{ item.name }} stat_path"
+# - name: "{{ repo.name }} stat_path"
 #   ansible.builtin.stat:
-#     path: "{{ item.path }}"
+#     path: "{{ repo.path }}"
 #   register: stat_path
 
-- name: "{{ item.name }} stat_git"
+- name: "[{{ ansible_loop.index }}/{{ ansible_loop.length }}] {{ repo.name }} stat_git"
   ansible.builtin.stat:
-    path: "{{ item.path }}/.git"
+    path: "{{ repo.path }}/.git"
   register: stat_git
 
-- name: "{{ item.name }} disable git"
+- name: "[{{ ansible_loop.index }}/{{ ansible_loop.length }}] {{ repo.name }} disable git"
   ansible.builtin.file:
-    path: "{{ item.path }}/.git"
+    path: "{{ repo.path }}/.git"
     state: absent
   when: stat_git.stat.exists | bool

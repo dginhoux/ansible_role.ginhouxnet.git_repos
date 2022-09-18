@@ -1,28 +1,28 @@
 ---
 # - ansible.builtin.debug:
 #     var: "{{ action.ignore_error | default('false') }}"
-#   loop: "{{ item.actions | flatten }}"
+#   loop: "{{ repo.actions | flatten }}"
 #   loop_control:
 #     loop_var: action
 #   when:
 #     - stat_git.stat.exists | bool
-#     - item.actions is iterable
+#     - repo.actions is iterable
 
-- name: "{{ item.name }} git commit"
+- name: "[{{ ansible_loop.index }}/{{ ansible_loop.length }}] {{ repo.name }} git commit"
   ansible.builtin.include_tasks:
     file: "tasks/sub-tasks/git_action_{{ action.action }}.yml"
-  loop: "{{ item.actions | flatten }}"
+  loop: "{{ repo.actions | flatten }}"
   loop_control:
     loop_var: action
   # ignore_errors: "{{ action.ignore_error | default('false') | bool }}"
   when:
     - stat_git.stat.exists | bool
-    - item.actions is iterable
-# - name: "{{ item.name }} git command"
+    - repo.actions is iterable
+# - name: "{{ repo.name }} git command"
 #   ansible.builtin.include_tasks: "git_command.yml"
-#   loop: "{{ item.actions | flatten }}"
+#   loop: "{{ repo.actions | flatten }}"
 #   loop_control:
 #     loop_var: action
 #   when:
 #     - stat_git.stat.exists | bool
-#     - item.actions is iterable
+#     - repo.actions is iterable

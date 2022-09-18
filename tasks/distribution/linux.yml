@@ -5,20 +5,26 @@
     state: present
   when: git_repos_install_binary | bool
 
-- name: start git enable tasks
+- name: include tasks for active git repos
   ansible.builtin.include_tasks:
     file: tasks/sub-tasks/git_enable.yml
   loop: "{{ git_repos | flatten }}"
+  loop_control:
+    loop_var: repo
+    extended: yes
   when: >
     git_repos is iterable
     and
-    item.state == "present"
+    repo.state == "present"
 
-- name: start git disable tasks
+- name: include tasks for disabled git repos
   ansible.builtin.include_tasks:
     file: tasks/sub-tasks/git_disable.yml
   loop: "{{ git_repos | flatten }}"
+  loop_control:
+    loop_var: repo
+    extended: yes
   when: >
     git_repos is iterable
     and
-    item.state == "absent"
+    repo.state == "absent"

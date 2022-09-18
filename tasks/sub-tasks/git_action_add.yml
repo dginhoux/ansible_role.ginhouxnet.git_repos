@@ -1,6 +1,6 @@
 ---
-- name: '{{ item.name }} git add "{{ action.content }}"'
+- name: '[{{ ansible_loop.index }}/{{ ansible_loop.length }}] {{ repo.name }} git add "{{ action.content }}"'
   ansible.builtin.shell:
-    cmd: "git -C {{ item.path }} add {{ action.content }}"
+    cmd: "git -C {{ repo.path }} add {{ action.content }}"
   # ignore_errors: true
   ignore_errors: "{{ action.ignore_error | default('false') | bool }}"
