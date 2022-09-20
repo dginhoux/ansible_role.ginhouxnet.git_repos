@@ -11,7 +11,7 @@
 
 # - name: "{{ repo.name }} git remote add {{ remote.name }}"
 - block:
-    - name: "[{{ ansible_loop.index }}/{{ ansible_loop.length }}] {{ repo.name }} git remote add {{ remote.name }} url"
+    - name: "[{{ ansible_loop.index }}/{{ ansible_loop.length }}] {{ repo.name }} git remote remove {{ remote.name }} url"
       community.general.git_config:
         name: "remote.{{ remote.name }}.url"
         # value: "{{ remote.url }}"
@@ -19,7 +19,7 @@
         scope: local
         repo: "{{ repo.path }}"
 
-    - name: "[{{ ansible_loop.index }}/{{ ansible_loop.length }}] {{ repo.name }} git remote add {{ remote.name }} fetch settings"
+    - name: "[{{ ansible_loop.index }}/{{ ansible_loop.length }}] {{ repo.name }} git remote remove {{ remote.name }} fetch settings"
       community.general.git_config:
         name: "remote.{{ remote.name }}.fetch"
         # value: "+refs/heads/*:refs/remotes/origin/*"
@@ -30,7 +30,7 @@
 
 # - name: "{{ repo.name }} git remote remove {{ remote.name }}"
 - block:
-    - name: "[{{ ansible_loop.index }}/{{ ansible_loop.length }}] {{ repo.name }} git remote remove {{ remote.name }} url"
+    - name: "[{{ ansible_loop.index }}/{{ ansible_loop.length }}] {{ repo.name }} git remote add {{ remote.name }} url"
       community.general.git_config:
         name: "remote.{{ remote.name }}.url"
         value: "{{ remote.url }}"
@@ -38,7 +38,7 @@
         scope: local
         repo: "{{ repo.path }}"
 
-    - name: "[{{ ansible_loop.index }}/{{ ansible_loop.length }}] {{ repo.name }} git remote remove {{ remote.name }} fetch settings"
+    - name: "[{{ ansible_loop.index }}/{{ ansible_loop.length }}] {{ repo.name }} git remote add {{ remote.name }} fetch settings"
       community.general.git_config:
         name: "remote.{{ remote.name }}.fetch"
         value: "+refs/heads/*:refs/remotes/{{ remote.name }}/*"
