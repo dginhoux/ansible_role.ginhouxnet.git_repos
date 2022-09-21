@@ -1,6 +1,6 @@
 ---
 - name: "[{{ ansible_loop.index }}/{{ ansible_loop.length }}] {{ repo.name }} git push to {{ action.to }}"
   ansible.builtin.shell:
-    cmd: "git -C {{ repo.path }} push {{ action.to }}"
+    cmd: "git -C {{ repo.path }} push {{ action.extra_params | default('') }} {{ action.to }}"
   # ignore_errors: true
   ignore_errors: "{{ action.ignore_error | default('false') | bool }}"

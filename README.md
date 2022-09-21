@@ -26,48 +26,38 @@ Role Variables
 ```yaml
 git_repos_install_binary: true
 
-
 git_repos:
-  - name: ansible
-    path: /ansible
+  - name: ansible_role_dginhoux.git_repos
+    path: "/ansible/roles/dginhoux.git_repos"
     state: present
     make_init: true
     make_conf_options: true
     make_conf_remotes: true
     make_actions: true
-    ignores: |
-      **-data
-      **-data?
-      **-logs
+    ignores: ""
     configs:
-      - name: user.name
-        value: git
-        state: present
-      - name: user.email
-        value: git@ginhoux.net
-        state: present
-      - name: core.compression
-        value: 0
-        state: present
-      - name: core.sharedrepository
-        value: all
-        state: present
+      - { state: present, name: user.name, value: git }
+      - { state: present, name: user.email, value: git@ginhoux.net }
+      - { state: present, name: core.compression, value: 9 }
+      - { state: present, name: core.sharedrepository, value: all }
+      - { state: present, name: core.editor, value: vim }
+      - { state: present, name: color.ui, value: "true" }
+      - { state: present, name: format.pretty, value: oneline }
+      - { state: absent, name: core.autocrlf, value: input }
+      - { state: absent, name: core.logallrefupdates, value: "true" }
     remotes:
-      - name: origin
-        url: https://xxxxxxxxxxxxxxxxxx@git.ginhoux.net/ansible.git
+      - name: gitea
+        url: "https://AZERTY@git-system.ginhoux.net/ansible/dginhoux.git_repos.git"
+        state: present
+      - name: github
+        url: "https://AZERTY@github.com/dginhoux/ansible_role.git_repos.git"
         state: present
     actions:
-      - action: add
-        conetnt: "."
-      - action: commit
-        message: "ok"
-      - action: push
-        to: origin master
-      - action: pull
-        from: origin master
-      - action: command
-        command: "fetch --all"
-
+      - { action: command, command: "rm -r --cached .", ignore_error: true, extra_params: "" }
+      - { action: add, content: "." }
+      - { action: commit, message: "{{ git_repos_commit_msg }}", extra_params: "--allow-empty" }
+      - { action: push, to: gitea master, extra_params: "--force" }
+      - { action: push, to: github master, ignore_error: true }
 ```
 
 

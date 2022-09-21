@@ -34,15 +34,20 @@ git_repos:
       - action: add
         content: "."
         ignore_error: false
+        # extra_params: ""
       - action: commit
         message: "ok"
         ignore_error: false
+        extra_params: "--allow-empty"
       - action: push
         to: origin master
         # ignore_error: true
+        # extra_params: ""
       - action: pull
         from: origin master
         # ignore_error: false
+        extra_params: ""
       - action: command
         command: "fetch --all"
         ignore_error: true
+        extra_params: ""
