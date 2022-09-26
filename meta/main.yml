@@ -2,7 +2,7 @@
 galaxy_info:
   role_name: git_repos
   author: Dany GINHOUX
-  description: install, configure git repos and launch actions like add, commit, pull, push, etc...
+  description: dginhoux.git_repos
   company: dginhoux
   license: MIT
   min_ansible_version: "2.12"
