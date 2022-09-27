@@ -2,7 +2,9 @@
 galaxy_info:
   role_name: git_repos
   author: Dany GINHOUX
-  description: dginhoux.git_repos
+  description: |
+    This ansible role is used to manage git on specified local folder. 
+    It can init (not as bare at this time) ; config options and remotes ; launch actions.
   company: dginhoux
   license: MIT
   min_ansible_version: "2.12"
