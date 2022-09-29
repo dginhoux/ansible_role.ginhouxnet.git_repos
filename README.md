@@ -75,55 +75,38 @@ Defaults variables defined in `defaults/main.yml` :
 git_repos_install_binary: true
 
 git_repos:
-  - name: ansible
-    path: /ansible
+  - name: ansible_role_dginhoux.sysctl
+    path: "/data/roles-infra/dginhoux.sysctl"
     state: present
     make_init: true
     make_conf_options: true
     make_conf_remotes: true
     make_actions: true
-    ignores: |
-      **-data
-      **-data?
-      **-logs
+    ignores: ""
     configs:
-      - name: user.name
-        value: git
-        state: present
-      - name: user.email
-        value: git@ginhoux.net
-        state: present
-      - name: core.compression
-        value: 0
-        state: present
-      - name: core.sharedrepository
-        value: all
-        state: present
+      - { state: present, name: user.name, value: git }
+      - { state: present, name: user.email, value: git@ginhoux.net }
+      - { state: present, name: core.compression, value: 9 }
+      - { state: present, name: core.sharedrepository, value: all }
+      - { state: present, name: core.editor, value: vim }
+      - { state: present, name: color.ui, value: "true" }
+      - { state: present, name: format.pretty, value: oneline }
+      - { state: absent, name: core.autocrlf, value: input }
+      - { state: absent, name: core.logallrefupdates, value: "true" }
     remotes:
-      - name: origin
-        url: https://xxxxxxxxxxxxxxxxxx@git.ginhoux.net/ansible.git
+      - name: gitea
+        url: "https://XXXXXXXXXXXXXXXXXXXXX@git-system.ginhoux.net/ansible/dginhoux.sysctl.git"
+        state: present
+      - name: github
+        url: "https://AAAAAAAAAAAAAAAAAAAAA@github.com/dginhoux/ansible_role.sysctl.git"
         state: present
     actions:
-      - action: add
-        content: "."
-        ignore_error: false
-        # extra_params: ""
-      - action: commit
-        message: "ok"
-        ignore_error: false
-        extra_params: "--allow-empty"
-      - action: push
-        to: origin master
-        # ignore_error: true
-        # extra_params: ""
-      - action: pull
-        from: origin master
-        # ignore_error: false
-        extra_params: ""
-      - action: command
-        command: "fetch --all"
-        ignore_error: true
-        extra_params: ""
+      - # { action: command, command: "rm -r --cached .", ignore_error: true }
+      - { action: add, content: "." }
+      - { action: commit, message: "{{ git_repos_commit_msg }}" }
+      - { action: command, command: "tag v1.2.0", ignore_error: true }
+      - { action: push, to: gitea master, extra_params: "--tags" }
+      - { action: push, to: github master, extra_params: "--tags", ignore_error: true }
 ```
 
 #### DEFAULT OS SPECIFIC VARIABLES
