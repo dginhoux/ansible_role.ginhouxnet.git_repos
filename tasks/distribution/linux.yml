@@ -1,11 +1,11 @@
 ---
-- name: ensure git is installed
+- name: Install git
   ansible.builtin.package:
     name: git
     state: present
   when: git_repos_install_binary | bool
 
-- name: include tasks for active git repos
+- name: Include tasks for active git repos
   ansible.builtin.include_tasks:
     file: tasks/sub-tasks/git_enable.yml
   loop: "{{ git_repos | flatten }}"
@@ -17,7 +17,7 @@
     and
     repo.state == "present"
 
-- name: include tasks for disabled git repos
+- name: Include tasks for disabled git repos
   ansible.builtin.include_tasks:
     file: tasks/sub-tasks/git_disable.yml
   loop: "{{ git_repos | flatten }}"
