@@ -3,7 +3,7 @@
   ansible.builtin.shell:
     # cmd: 'git -C {{ repo.path }} commit -m "{{ action.message }}" || true'
     # cmd: 'git -C {{ repo.path }} commit --allow-empty -m "{{ action.message }}" '
-    cmd: 'git -C {{ repo.path }} commit {{ action.extra_params | default("") }} --message="{{ action.message }}"'
+    cmd: 'git -C {{ repo.path }} commit {{ action.extra_params | default("") }} --message="{{ git_repos_commit_msg | default(action.message) }}"'
     # cmd: 'git -C {{ repo.path }} diff-index --quiet HEAD  || git -C {{ repo.path }} commit -m "{{ action.message }}" '
   # ignore_errors: true
   ignore_errors: "{{ action.ignore_error | default('false') | bool }}"

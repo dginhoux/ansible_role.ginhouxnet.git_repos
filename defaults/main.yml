@@ -30,7 +30,7 @@ git_repos:
     actions:
       - # { action: command, command: "rm -r --cached .", ignore_error: true }
       - { action: add, content: "." }
-      - { action: commit, message: "{{ git_repos_commit_msg }}" }
+      - { action: commit, message: "new commit for..." }
       - { action: command, command: "tag v1.2.0", ignore_error: true }
       - { action: push, to: gitea master, extra_params: "--tags" }
       - { action: push, to: github master, extra_params: "--tags", ignore_error: true }
