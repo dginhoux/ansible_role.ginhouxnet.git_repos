@@ -7,7 +7,7 @@ galaxy_info:
     It can init (not as bare at this time) ; config options and remotes ; launch actions.
   company: dginhoux
   license: MIT
-  min_ansible_version: "2.12"
+  min_ansible_version: "2.13"
   platforms:
     - name: Debian
       versions:
