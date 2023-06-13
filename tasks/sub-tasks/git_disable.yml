@@ -5,12 +5,12 @@
 #   register: stat_path
 
 - name: "[{{ ansible_loop.index }}/{{ ansible_loop.length }}] {{ repo.name }} stat_git"
+  register: stat_git
   ansible.builtin.stat:
     path: "{{ repo.path }}/.git"
-  register: stat_git
 
 - name: "[{{ ansible_loop.index }}/{{ ansible_loop.length }}] {{ repo.name }} disable git"
+  when: stat_git.stat.exists | bool
   ansible.builtin.file:
     path: "{{ repo.path }}/.git"
     state: absent
-  when: stat_git.stat.exists | bool

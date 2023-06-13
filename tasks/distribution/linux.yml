@@ -1,30 +1,34 @@
 ---
 - name: Install git
+  tags:
+    - install
+  when: git_repos_install_binary | bool
   ansible.builtin.package:
     name: git
     state: present
-  when: git_repos_install_binary | bool
 
 - name: Include tasks for active git repos
+  tags:
+    - present
+  when:
+    - git_repos is iterable
+    - repo.state == "present"
+  loop: "{{ git_repos | flatten }}"
+  loop_control:
+    loop_var: repo
+    extended: true
   ansible.builtin.include_tasks:
     file: tasks/sub-tasks/git_enable.yml
-  loop: "{{ git_repos | flatten }}"
-  loop_control:
-    loop_var: repo
-    extended: yes
-  when: >
-    git_repos is iterable
-    and
-    repo.state == "present"
 
 - name: Include tasks for disabled git repos
-  ansible.builtin.include_tasks:
-    file: tasks/sub-tasks/git_disable.yml
+  tags:
+    - absent
+  when:
+    - git_repos is iterable
+    - repo.state == "absent"
   loop: "{{ git_repos | flatten }}"
   loop_control:
     loop_var: repo
-    extended: yes
-  when: >
-    git_repos is iterable
-    and
-    repo.state == "absent"
+    extended: true
+  ansible.builtin.include_tasks:
+    file: tasks/sub-tasks/git_disable.yml

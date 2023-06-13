@@ -10,7 +10,10 @@
 #   when: remote.state == "present"
 
 # - name: "{{ repo.name }} git remote add {{ remote.name }}"
-- block:
+
+- name: "[{{ ansible_loop.index }}/{{ ansible_loop.length }}] {{ repo.name }} git remote remove {{ remote.name }}"
+  when: remote.state == "absent"
+  block:
     - name: "[{{ ansible_loop.index }}/{{ ansible_loop.length }}] {{ repo.name }} git remote remove {{ remote.name }} url"
       community.general.git_config:
         name: "remote.{{ remote.name }}.url"
@@ -26,10 +29,12 @@
         state: "absent"
         scope: local
         repo: "{{ repo.path }}"
-  when: remote.state == "absent"
 
 # - name: "{{ repo.name }} git remote remove {{ remote.name }}"
-- block:
+
+- name: "[{{ ansible_loop.index }}/{{ ansible_loop.length }}] {{ repo.name }} git remote add {{ remote.name }}"
+  when: remote.state == "present"
+  block:
     - name: "[{{ ansible_loop.index }}/{{ ansible_loop.length }}] {{ repo.name }} git remote add {{ remote.name }} url"
       community.general.git_config:
         name: "remote.{{ remote.name }}.url"
@@ -45,4 +50,3 @@
         state: "present"
         scope: local
         repo: "{{ repo.path }}"
-  when: remote.state == "present"

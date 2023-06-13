@@ -1,23 +1,23 @@
 ---
 - name: "[{{ ansible_loop.index }}/{{ ansible_loop.length }}] {{ repo.name }} set git configs"
+  when:
+    - stat_git.stat.exists | bool
+    - repo.configs is iterable
+  loop: "{{ repo.configs | flatten }}"
+  loop_control:
+    loop_var: config
   community.general.git_config:
     name: "{{ config.name }}"
     value: "{{ config.value }}"
     state: "{{ config.state }}"
     scope: local
     repo: "{{ repo.path }}"
-  loop: "{{ repo.configs | flatten }}"
-  loop_control:
-    loop_var: config
-  when:
-    - stat_git.stat.exists | bool
-    - repo.configs is iterable
 
 - name: "[{{ ansible_loop.index }}/{{ ansible_loop.length }}] {{ repo.name }} set git ignores"
+  when: stat_path.stat.exists | bool
   ansible.builtin.copy:
     content: "{{ repo.ignores }}"
     dest: "{{ repo.path }}/.gitignore"
     owner: root
     group: root
     mode: "0644"
-  when: stat_path.stat.exists | bool

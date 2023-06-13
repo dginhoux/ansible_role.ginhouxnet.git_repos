@@ -1,34 +1,34 @@
 ---
 - name: "[{{ ansible_loop.index }}/{{ ansible_loop.length }}] {{ repo.name }} get path infos"
+  register: stat_path
   ansible.builtin.stat:
     path: "{{ repo.path }}"
-  register: stat_path
 
 - name: "[{{ ansible_loop.index }}/{{ ansible_loop.length }}] {{ repo.name }} get path git status"
+  register: stat_git
   ansible.builtin.stat:
     path: "{{ repo.path }}/.git"
-  register: stat_git
 
 - name: "[{{ ansible_loop.index }}/{{ ansible_loop.length }}] {{ repo.name }} include git init tasks"
+  when: repo.make_init | bool
   ansible.builtin.include_tasks:
     file: "tasks/sub-tasks/git_enable_init.yml"
-  when: repo.make_init | bool
 
 - name: "[{{ ansible_loop.index }}/{{ ansible_loop.length }}] {{ repo.name }} include git config tasks"
+  when: repo.make_conf_options | bool
   ansible.builtin.include_tasks:
     file: "tasks/sub-tasks/git_enable_configs.yml"
-  when: repo.make_conf_options | bool
 
 - name: "[{{ ansible_loop.index }}/{{ ansible_loop.length }}] {{ repo.name }} include git remotes tasks"
-  ansible.builtin.include_tasks:
-    file: "tasks/sub-tasks/git_enable_remotes.yml"
-  loop: "{{ repo.remotes | flatten }}"
-  loop_control:
-    loop_var: remote
   when:
     - stat_git.stat.exists | bool
     - repo.remotes is iterable
     - repo.make_conf_remotes | bool
+  loop: "{{ repo.remotes | flatten }}"
+  loop_control:
+    loop_var: remote
+  ansible.builtin.include_tasks:
+    file: "tasks/sub-tasks/git_enable_remotes.yml"
 
 # - name: "[{{ ansible_loop.index }}/{{ ansible_loop.length }}] {{ repo.name }} include git submodules config tasks"
 #   ansible.builtin.include_tasks:
@@ -53,6 +53,6 @@
 #     - repo.make_submodules_actions | bool
 
 - name: "[{{ ansible_loop.index }}/{{ ansible_loop.length }}] {{ repo.name }} include git actions tasks"
+  when: repo.make_actions | bool
   ansible.builtin.include_tasks:
     file: "tasks/sub-tasks/git_enable_actions.yml"
-  when: repo.make_actions | bool

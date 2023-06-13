@@ -9,15 +9,15 @@
 #     - repo.actions is iterable
 
 - name: "[{{ ansible_loop.index }}/{{ ansible_loop.length }}] {{ repo.name }} git commit"
-  ansible.builtin.include_tasks:
-    file: "tasks/sub-tasks/git_action_{{ action.action }}.yml"
-  loop: "{{ repo.actions | flatten }}"
-  loop_control:
-    loop_var: action
-  # ignore_errors: "{{ action.ignore_error | default('false') | bool }}"
   when:
     - stat_git.stat.exists | bool
     - repo.actions is iterable
+  loop: "{{ repo.actions | flatten }}"
+  loop_control:
+    loop_var: action
+  ansible.builtin.include_tasks:
+    file: "tasks/sub-tasks/git_action_{{ action.action }}.yml"
+  # ignore_errors: "{{ action.ignore_error | default('false') | bool }}"
 # - name: "{{ repo.name }} git command"
 #   ansible.builtin.include_tasks: "git_command.yml"
 #   loop: "{{ repo.actions | flatten }}"
