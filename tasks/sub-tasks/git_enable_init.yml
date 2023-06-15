@@ -4,7 +4,7 @@
     - stat_path.stat.exists | bool
     - not stat_git.stat.exists | bool
   # ignore_errors: true
-  ansible.builtin.shell:
+  ansible.builtin.command:
     cmd: "git -C {{ repo.path }} init"
 
 - name: "[{{ ansible_loop.index }}/{{ ansible_loop.length }}] {{ repo.name }} get path git status"
