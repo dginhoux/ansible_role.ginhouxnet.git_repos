@@ -1,11 +1,12 @@
 ---
-- name: Install git
+- name: Install git package
   tags:
     - install
   when: git_repos_install_binary | bool
   ansible.builtin.package:
     name: git
     state: present
+
 
 - name: Include tasks for active git repos
   tags:
@@ -19,6 +20,7 @@
     extended: true
   ansible.builtin.include_tasks:
     file: tasks/sub-tasks/git_enable.yml
+
 
 - name: Include tasks for disabled git repos
   tags:

@@ -30,6 +30,11 @@
   ansible.builtin.include_tasks:
     file: "tasks/sub-tasks/git_enable_remotes.yml"
 
+- name: "[{{ ansible_loop.index }}/{{ ansible_loop.length }}] {{ repo.name }} include git actions tasks"
+  when: repo.make_actions | bool
+  ansible.builtin.include_tasks:
+    file: "tasks/sub-tasks/git_enable_actions.yml"
+
 # - name: "[{{ ansible_loop.index }}/{{ ansible_loop.length }}] {{ repo.name }} include git submodules config tasks"
 #   ansible.builtin.include_tasks:
 #     file: "tasks/sub-tasks/git_enable_submodules_config.yml"
@@ -51,8 +56,3 @@
 #     - stat_git.stat.exists | bool
 #     - repo.submodules is iterable
 #     - repo.make_submodules_actions | bool
-
-- name: "[{{ ansible_loop.index }}/{{ ansible_loop.length }}] {{ repo.name }} include git actions tasks"
-  when: repo.make_actions | bool
-  ansible.builtin.include_tasks:
-    file: "tasks/sub-tasks/git_enable_actions.yml"
