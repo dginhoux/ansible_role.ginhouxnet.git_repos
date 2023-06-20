@@ -1,5 +1,5 @@
 ---
-- name: "[{{ ansible_loop.index }}/{{ ansible_loop.length }}] {{ repo.name }} set git configs"
+- name: "Run git config for {{ repo.name }}"
   when:
     - stat_git.stat.exists | bool
     - repo.configs is iterable
@@ -13,7 +13,7 @@
     scope: local
     repo: "{{ repo.path }}"
 
-- name: "[{{ ansible_loop.index }}/{{ ansible_loop.length }}] {{ repo.name }} set git ignores"
+- name: "Set .gitignores for {{ repo.name }}"
   when: stat_path.stat.exists | bool
   ansible.builtin.copy:
     content: "{{ repo.ignores }}"

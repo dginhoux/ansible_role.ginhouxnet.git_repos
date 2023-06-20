@@ -8,29 +8,30 @@
     state: present
 
 
-- name: Include tasks for active git repos
+- name: Include tasks for manage git repo
   tags:
     - present
   when:
     - git_repos is iterable
-    - repo.state == "present"
+    - repo.state is defined
+    - repo.state == "present" or repo.state == "absent"
   loop: "{{ git_repos | flatten }}"
   loop_control:
     loop_var: repo
-    extended: true
+    # extended: true
   ansible.builtin.include_tasks:
-    file: tasks/sub-tasks/git_enable.yml
+    file: "tasks/sub-tasks/git_{{ repo.state }}.yml"
 
 
-- name: Include tasks for disabled git repos
-  tags:
-    - absent
-  when:
-    - git_repos is iterable
-    - repo.state == "absent"
-  loop: "{{ git_repos | flatten }}"
-  loop_control:
-    loop_var: repo
-    extended: true
-  ansible.builtin.include_tasks:
-    file: tasks/sub-tasks/git_disable.yml
+# - name: Include tasks for disabled git repos
+#   tags:
+#     - absent
+#   when:
+#     - git_repos is iterable
+#     - repo.state == "absent"
+#   loop: "{{ git_repos | flatten }}"
+#   loop_control:
+#     loop_var: repo
+#     extended: true
+#   ansible.builtin.include_tasks:
+#     file: tasks/sub-tasks/git_disable.yml

@@ -9,12 +9,11 @@
 #     cmd: 'git -C {{ repo.path }} remote add {{ remote.name }} {{ remote.url }} || echo 0'
 #   when: remote.state == "present"
 
-# - name: "{{ repo.name }} git remote add {{ remote.name }}"
 
-- name: "[{{ ansible_loop.index }}/{{ ansible_loop.length }}] {{ repo.name }} git remote remove {{ remote.name }}"
+- name: "Run git remote remove for {{ repo.name }}"
   when: remote.state == "absent"
   block:
-    - name: "[{{ ansible_loop.index }}/{{ ansible_loop.length }}] {{ repo.name }} git remote remove {{ remote.name }} url"
+    - name: "Run git remote remove url for {{ repo.name }}"
       community.general.git_config:
         name: "remote.{{ remote.name }}.url"
         # value: "{{ remote.url }}"
@@ -22,7 +21,7 @@
         scope: local
         repo: "{{ repo.path }}"
 
-    - name: "[{{ ansible_loop.index }}/{{ ansible_loop.length }}] {{ repo.name }} git remote remove {{ remote.name }} fetch settings"
+    - name: "Run git remote remove fetch for {{ repo.name }}"
       community.general.git_config:
         name: "remote.{{ remote.name }}.fetch"
         # value: "+refs/heads/*:refs/remotes/origin/*"
@@ -30,12 +29,11 @@
         scope: local
         repo: "{{ repo.path }}"
 
-# - name: "{{ repo.name }} git remote remove {{ remote.name }}"
 
-- name: "[{{ ansible_loop.index }}/{{ ansible_loop.length }}] {{ repo.name }} git remote add {{ remote.name }}"
+- name: "Run git remote add for {{ repo.name }}"
   when: remote.state == "present"
   block:
-    - name: "[{{ ansible_loop.index }}/{{ ansible_loop.length }}] {{ repo.name }} git remote add {{ remote.name }} url"
+    - name: "Run git remote add url for {{ repo.name }}"
       community.general.git_config:
         name: "remote.{{ remote.name }}.url"
         value: "{{ remote.url }}"
@@ -43,7 +41,7 @@
         scope: local
         repo: "{{ repo.path }}"
 
-    - name: "[{{ ansible_loop.index }}/{{ ansible_loop.length }}] {{ repo.name }} git remote add {{ remote.name }} fetch settings"
+    - name: "Run git remote add fetch for {{ repo.name }}"
       community.general.git_config:
         name: "remote.{{ remote.name }}.fetch"
         value: "+refs/heads/*:refs/remotes/{{ remote.name }}/*"

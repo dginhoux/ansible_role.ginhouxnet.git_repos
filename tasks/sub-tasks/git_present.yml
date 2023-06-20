@@ -1,25 +1,25 @@
 ---
-- name: "[{{ ansible_loop.index }}/{{ ansible_loop.length }}] {{ repo.name }} get path infos"
+- name: "Get path infos {{ repo.path }}"
   register: stat_path
   ansible.builtin.stat:
     path: "{{ repo.path }}"
 
-- name: "[{{ ansible_loop.index }}/{{ ansible_loop.length }}] {{ repo.name }} get path git status"
+- name: "Get current git status in {{ repo.path }}"
   register: stat_git
   ansible.builtin.stat:
     path: "{{ repo.path }}/.git"
 
-- name: "[{{ ansible_loop.index }}/{{ ansible_loop.length }}] {{ repo.name }} include git init tasks"
+- name: "Include git init tasks for {{ repo.name }}"
   when: repo.make_init | bool
   ansible.builtin.include_tasks:
-    file: "tasks/sub-tasks/git_enable_init.yml"
+    file: "tasks/sub-tasks/git_init.yml"
 
-- name: "[{{ ansible_loop.index }}/{{ ansible_loop.length }}] {{ repo.name }} include git config tasks"
+- name: "Include git config tasks for {{ repo.name }}"
   when: repo.make_conf_options | bool
   ansible.builtin.include_tasks:
-    file: "tasks/sub-tasks/git_enable_configs.yml"
+    file: "tasks/sub-tasks/git_config.yml"
 
-- name: "[{{ ansible_loop.index }}/{{ ansible_loop.length }}] {{ repo.name }} include git remotes tasks"
+- name: "Include git remote tasks for {{ repo.name }}"
   when:
     - stat_git.stat.exists | bool
     - repo.remotes is iterable
@@ -28,12 +28,20 @@
   loop_control:
     loop_var: remote
   ansible.builtin.include_tasks:
-    file: "tasks/sub-tasks/git_enable_remotes.yml"
+    file: "tasks/sub-tasks/git_remote.yml"
 
-- name: "[{{ ansible_loop.index }}/{{ ansible_loop.length }}] {{ repo.name }} include git actions tasks"
-  when: repo.make_actions | bool
+- name: "Include git action tasks for {{ repo.name }}"
+  when:
+    - stat_git.stat.exists | bool
+    - repo.actions is iterable
+    - action.action is defined
+  loop: "{{ repo.actions | flatten }}"
+  loop_control:
+    loop_var: action
+  # ignore_errors: "{{ action.ignore_error | default('false') | bool }}"
   ansible.builtin.include_tasks:
-    file: "tasks/sub-tasks/git_enable_actions.yml"
+    file: "tasks/sub-tasks/git_action_{{ action.action }}.yml"
+
 
 # - name: "[{{ ansible_loop.index }}/{{ ansible_loop.length }}] {{ repo.name }} include git submodules config tasks"
 #   ansible.builtin.include_tasks:

@@ -1,0 +1,12 @@
+---
+
+- name: "Get current git status in {{ repo.path }}"
+  register: stat_git
+  ansible.builtin.stat:
+    path: "{{ repo.path }}/.git"
+
+- name: "Disable git repo in {{ repo.path }}"
+  when: stat_git.stat.exists | bool
+  ansible.builtin.file:
+    path: "{{ repo.path }}/.git"
+    state: absent
