@@ -35,6 +35,7 @@
     - stat_git.stat.exists | bool
     - repo.actions is iterable
     - action.action is defined
+    - action.action is in "add,command,commit,pull,push"
   loop: "{{ repo.actions | flatten }}"
   loop_control:
     loop_var: action
