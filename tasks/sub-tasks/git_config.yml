@@ -6,6 +6,7 @@
   loop: "{{ repo.configs | flatten }}"
   loop_control:
     loop_var: config
+    label: "config: {{ config.name  }}"
   community.general.git_config:
     name: "{{ config.name }}"
     value: "{{ config.value }}"

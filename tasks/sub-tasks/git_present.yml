@@ -27,6 +27,7 @@
   loop: "{{ repo.remotes | flatten }}"
   loop_control:
     loop_var: remote
+    label: "remote: {{ remote.name }}"
   ansible.builtin.include_tasks:
     file: "tasks/sub-tasks/git_remote.yml"
 
@@ -34,14 +35,15 @@
   when:
     - stat_git.stat.exists | bool
     - repo.actions is iterable
-    - action.action is defined
-    - action.action is in "add,command,commit,pull,push"
+    - action.name is defined
+    - action.name is in "add,command,commit,pull,push"
   loop: "{{ repo.actions | flatten }}"
   loop_control:
     loop_var: action
+    label: "action: {{ action.name }}"
   # ignore_errors: "{{ action.ignore_error | default('false') | bool }}"
   ansible.builtin.include_tasks:
-    file: "tasks/sub-tasks/git_action_{{ action.action }}.yml"
+    file: "tasks/sub-tasks/git_action_{{ action.name }}.yml"
 
 
 # - name: "[{{ ansible_loop.index }}/{{ ansible_loop.length }}] {{ repo.name }} include git submodules config tasks"

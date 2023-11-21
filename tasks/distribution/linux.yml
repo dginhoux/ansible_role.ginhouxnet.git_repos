@@ -18,6 +18,7 @@
   loop: "{{ git_repos | flatten }}"
   loop_control:
     loop_var: repo
+    label: "repo: {{ repo.name }}"
     # extended: true
   ansible.builtin.include_tasks:
     file: "tasks/sub-tasks/git_{{ repo.state }}.yml"
