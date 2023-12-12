@@ -8,14 +8,44 @@
     state: present
 
 
+- name: Set git repos list
+  when:
+    - git_repos_list is defined
+    - git_repos_list is iterable
+    - git_repos_limit_list is not defined or git_repos_limit_list | length == 0
+  ansible.builtin.set_fact:
+    git_repos_list2: "{{ git_repos_list }}"
+
+
+- name: Set new git repos with selected list
+  when:
+    - git_repos_list is defined
+    - git_repos_list is iterable
+    - git_repos_limit_list is defined
+    - git_repos_limit_list | length > 0
+  block:
+    - name: Set new (empty) git repos list with selected list
+      ansible.builtin.set_fact:
+        git_repos_list2: []
+    - name: Set new git repos list with selected list
+      when:
+        - repo.name in git_repos_limit_list
+      loop: "{{ git_repos_list | flatten }}"
+      loop_control:
+        loop_var: repo
+        label: "repo: {{ repo.name }}"
+      ansible.builtin.set_fact:
+        git_repos_list2: "{{ git_repos_list2 + [ repo ] }}"
+
+
 - name: Include tasks for manage git repo
   tags:
     - present
   when:
-    - git_repos is iterable
+    - git_repos_list2 is iterable
     - repo.state is defined
     - repo.state == "present" or repo.state == "absent"
-  loop: "{{ git_repos | flatten }}"
+  loop: "{{ git_repos_list2 | flatten }}"
   loop_control:
     loop_var: repo
     label: "repo: {{ repo.name }}"
@@ -23,16 +53,3 @@
   ansible.builtin.include_tasks:
     file: "tasks/sub-tasks/git_{{ repo.state }}.yml"
 
-
-# - name: Include tasks for disabled git repos
-#   tags:
-#     - absent
-#   when:
-#     - git_repos is iterable
-#     - repo.state == "absent"
-#   loop: "{{ git_repos | flatten }}"
-#   loop_control:
-#     loop_var: repo
-#     extended: true
-#   ansible.builtin.include_tasks:
-#     file: tasks/sub-tasks/git_disable.yml
