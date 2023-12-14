@@ -1,5 +1,6 @@
 ---
 - name: Install git package
+  become: true
   tags:
     - install
   when: git_repos_install_binary | bool
@@ -36,6 +37,15 @@
         label: "repo: {{ repo.name }}"
       ansible.builtin.set_fact:
         git_repos_list2: "{{ git_repos_list2 + [ repo ] }}"
+
+
+- name: Set actions to the global specified
+  when:
+    - git_repos_force_actions is defined
+    - git_repos_force_actions is iterable
+    - git_repos_force_actions | length > 0
+  ansible.builtin.set_fact:
+    git_repos_list2: "{{ git_repos_list2 | map('combine', {'actions': git_repos_force_actions }) }}"
 
 
 - name: Include tasks for manage git repo

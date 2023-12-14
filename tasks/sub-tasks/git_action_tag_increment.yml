@@ -1,0 +1,31 @@
+---
+- name: "Run git tag increment for {{ repo.name }} if something is commited"
+  # when:
+  #   - commit_output is defined
+  #   - commit_output.stdout is defined
+  #   - commit_output.rc == 0
+  ignore_errors: "{{ action.ignore_error | default('false') | bool }}"
+  ansible.builtin.shell:
+    cmd: |
+      incver() {
+          VERSION=$1
+          VERSION_BITS=(${VERSION//./ })
+          VNUM1=${VERSION_BITS[0]}
+          VNUM2=${VERSION_BITS[1]}
+          VNUM3=${VERSION_BITS[2]}
+          VNUM3=$((VNUM3+1))
+
+          if [ $VNUM3 -gt 10 ]; then
+          VNUM3=0
+          VNUM2=$((VNUM2+1))
+          fi
+          if [ $VNUM2 -gt 10 ]; then
+          VNUM2=0
+          VNUM1=$((VNUM1+1))
+          fi
+
+          export VERSION="$VNUM1.$VNUM2.$VNUM3"
+      }
+      VERSION=$( git -C {{ repo.path }} describe --abbrev=0 --tags )
+      incver $VERSION
+      git -C {{ repo.path }} tag $VERSION

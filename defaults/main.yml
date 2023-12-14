@@ -4,7 +4,7 @@ git_repos_install_binary: true
 ## this list can be used at playbooks level to only run specified git repos
 ## usefull for oneshot
 git_repos_limit_list: []
-
+git_repos_force_actions: []
 
 git_repos_list:
   - name: ansible_role_dginhoux.sysctl
