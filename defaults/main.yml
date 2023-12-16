@@ -26,16 +26,16 @@ git_repos_list:
       - { state: absent, name: core.autocrlf, value: input }
       - { state: absent, name: core.logallrefupdates, value: "true" }
     remotes:
-      - name: gitea
-        url: "https://XXXXXXXXXXXXXXXXXXXXX@git-system.ginhoux.net/ansible/dginhoux.sysctl.git"
-        state: present
       - name: github
         url: "https://AAAAAAAAAAAAAAAAAAAAA@github.com/dginhoux/ansible_role.sysctl.git"
         state: present
     actions:
-      - # { name: command, command: "rm -r --cached .", ignore_error: true }
+      - # { name: command, command: "merge", ignore_error: true }
+      - { name: rm, content: "old" }
       - { name: add, content: "." }
       - { name: commit, message: "new commit for..." }
       - { name: command, command: "tag v1.2.0", ignore_error: true }
+      - { name: fetch, remote: gitea master, extra_params: "" }
       - { name: push, to: gitea master, extra_params: "--tags" }
       - { name: push, to: github master, extra_params: "--tags", ignore_error: true }
+      - { name: pull, from: gitea master, extra_params: "--tags" }

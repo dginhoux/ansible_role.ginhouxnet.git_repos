@@ -3,7 +3,6 @@
   become: true
   tags:
     - install
-  when: git_repos_install_binary | bool
   ansible.builtin.package:
     name: git
     state: present

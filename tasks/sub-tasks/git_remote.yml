@@ -1,7 +1,8 @@
 ---
 
 - name: "Run git remote remove for {{ repo.name }}"
-  when: remote.state == "absent"
+  when:
+    - remote.state == "absent"
   ignore_errors: "{{ remote.ignore_error | default('false') | bool }}"
   register: remote_remove
   failed_when: remote_remove.rc != 0 and remote_remove.rc != 3
@@ -9,49 +10,10 @@
     cmd: "git -C {{ repo.path }} remote remove {{ remote.extra_params | default('') }} {{ remote.name }}"
 
 - name: "Run git remote add for {{ repo.name }}"
-  when: remote.state == "present"
+  when:
+    - remote.state == "present"
   ignore_errors: "{{ remote.ignore_error | default('false') | bool }}"
   register: remote_add
   failed_when: remote_add.rc != 0 and remote_add.rc != 3
   ansible.builtin.command:
     cmd: "git -C {{ repo.path }} remote add {{ remote.extra_params | default('') }} {{ remote.name }} {{ remote.url }}"
-
-
-# - name: "Run git remote remove for {{ repo.name }}"
-#   when: remote.state == "absent"
-#   block:
-#     - name: "Run git remote remove url for {{ repo.name }}"
-#       community.general.git_config:
-#         name: "remote.{{ remote.name }}.url"
-#         # value: "{{ remote.url }}"
-#         state: "absent"
-#         scope: local
-#         repo: "{{ repo.path }}"
-
-#     # - name: "Run git remote remove fetch for {{ repo.name }}"
-#     #   community.general.git_config:
-#     #     name: "remote.{{ remote.name }}.fetch"
-#     #     # value: "+refs/heads/*:refs/remotes/origin/*"
-#     #     state: "absent"
-#     #     scope: local
-#     #     repo: "{{ repo.path }}"
-
-
-# - name: "Run git remote add for {{ repo.name }}"
-#   when: remote.state == "present"
-#   block:
-#     - name: "Run git remote add url for {{ repo.name }}"
-#       community.general.git_config:
-#         name: "remote.{{ remote.name }}.url"
-#         value: "{{ remote.url }}"
-#         state: "present"
-#         scope: local
-#         repo: "{{ repo.path }}"
-
-#     # - name: "Run git remote add fetch for {{ repo.name }}"
-#     #   community.general.git_config:
-#     #     name: "remote.{{ remote.name }}.fetch"
-#     #     value: "+refs/heads/*:refs/remotes/{{ remote.name }}/*"
-#     #     state: "present"
-#     #     scope: local
-#     #     repo: "{{ repo.path }}"

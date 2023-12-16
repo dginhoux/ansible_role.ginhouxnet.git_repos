@@ -1,0 +1,5 @@
+---
+- name: "Run git rm for {{ repo.name }}"
+  ignore_errors: "{{ action.ignore_error | default('false') | bool }}"
+  ansible.builtin.command:
+    cmd: "git -C {{ repo.path }} rm {{ action.extra_params | default('') }} {{ action.content }}"
