@@ -12,15 +12,23 @@
   when:
     - git_repos_list is defined
     - git_repos_list is iterable
+    - git_repos_list_group is defined
+    - git_repos_list_group is iterable
+    - git_repos_list_host is defined
+    - git_repos_list_host is iterable
     - git_repos_limit_list is not defined or git_repos_limit_list | length == 0
   ansible.builtin.set_fact:
-    git_repos_list2: "{{ git_repos_list }}"
+    git_repos_list2: "{{ git_repos_list + git_repos_list_group + git_repos_list_host | flatten(levels=1) }}"
 
 
 - name: Set new git repos with selected list
   when:
     - git_repos_list is defined
     - git_repos_list is iterable
+    - git_repos_list_group is defined
+    - git_repos_list_group is iterable
+    - git_repos_list_host is defined
+    - git_repos_list_host is iterable
     - git_repos_limit_list is defined
     - git_repos_limit_list | length > 0
   block:
@@ -30,7 +38,7 @@
     - name: Set new git repos list with selected list
       when:
         - repo.name in git_repos_limit_list
-      loop: "{{ git_repos_list | flatten }}"
+      loop: "{{ git_repos_list + git_repos_list_group + git_repos_list_host | flatten(levels=1) }}"
       loop_control:
         loop_var: repo
         label: "repo: {{ repo.name }}"

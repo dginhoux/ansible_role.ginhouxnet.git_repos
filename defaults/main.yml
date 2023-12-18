@@ -6,36 +6,39 @@ git_repos_install_binary: true
 git_repos_limit_list: []
 git_repos_force_actions: []
 
-git_repos_list:
-  - name: ansible_role_dginhoux.sysctl
-    path: "/data/roles-infra/dginhoux.sysctl"
-    state: present
-    make_init: true
-    make_conf_options: true
-    make_conf_remotes: true
-    make_actions: true
-    ignores: ""
-    configs:
-      - { state: present, name: user.name, value: git }
-      - { state: present, name: user.email, value: git@ginhoux.net }
-      - { state: present, name: core.compression, value: 9 }
-      - { state: present, name: core.sharedrepository, value: all }
-      - { state: present, name: core.editor, value: vim }
-      - { state: present, name: color.ui, value: "true" }
-      - { state: present, name: format.pretty, value: oneline }
-      - { state: absent, name: core.autocrlf, value: input }
-      - { state: absent, name: core.logallrefupdates, value: "true" }
-    remotes:
-      - name: github
-        url: "https://AAAAAAAAAAAAAAAAAAAAA@github.com/dginhoux/ansible_role.sysctl.git"
-        state: present
-    actions:
-      - # { name: command, command: "merge", ignore_error: true }
-      - { name: rm, content: "old" }
-      - { name: add, content: "." }
-      - { name: commit, message: "new commit for..." }
-      - { name: command, command: "tag v1.2.0", ignore_error: true }
-      - { name: fetch, remote: gitea master, extra_params: "" }
-      - { name: push, to: gitea master, extra_params: "--tags" }
-      - { name: push, to: github master, extra_params: "--tags", ignore_error: true }
-      - { name: pull, from: gitea master, extra_params: "--tags" }
+git_repos_list: []
+git_repos_list_group: []
+git_repos_list_host: []
+# git_repos_list:
+#   - name: ansible_role_dginhoux.sysctl
+#     path: "/data/roles-infra/dginhoux.sysctl"
+#     state: present
+#     make_init: true
+#     make_conf_options: true
+#     make_conf_remotes: true
+#     make_actions: true
+#     ignores: ""
+#     configs:
+#       - { state: present, name: user.name, value: git }
+#       - { state: present, name: user.email, value: git@ginhoux.net }
+#       - { state: present, name: core.compression, value: 9 }
+#       - { state: present, name: core.sharedrepository, value: all }
+#       - { state: present, name: core.editor, value: vim }
+#       - { state: present, name: color.ui, value: "true" }
+#       - { state: present, name: format.pretty, value: oneline }
+#       - { state: absent, name: core.autocrlf, value: input }
+#       - { state: absent, name: core.logallrefupdates, value: "true" }
+#     remotes:
+#       - name: github
+#         url: "https://AAAAAAAAAAAAAAAAAAAAA@github.com/dginhoux/ansible_role.sysctl.git"
+#         state: present
+#     actions:
+#       - # { name: command, command: "merge", ignore_error: true }
+#       - { name: rm, content: "old" }
+#       - { name: add, content: "." }
+#       - { name: commit, message: "new commit for..." }
+#       - { name: command, command: "tag v1.2.0", ignore_error: true }
+#       - { name: fetch, remote: gitea master, extra_params: "" }
+#       - { name: push, to: gitea master, extra_params: "--tags" }
+#       - { name: push, to: github master, extra_params: "--tags", ignore_error: true }
+#       - { name: pull, from: gitea master, extra_params: "--tags" }
