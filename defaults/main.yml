@@ -34,6 +34,7 @@ git_repos_list_host: []
 #         state: present
 #     actions:
 #       - # { name: command, command: "merge", ignore_error: true }
+#       - { name: tag_increment, extra_params: "--force", ignore_error: true }
 #       - { name: rm, content: "old" }
 #       - { name: add, content: "." }
 #       - { name: commit, message: "new commit for..." }

@@ -28,4 +28,4 @@
       }
       VERSION=$( git -C {{ repo.path }} describe --abbrev=0 --tags )
       incver $VERSION
-      git -C {{ repo.path }} tag $VERSION
+      git -C {{ repo.path }} tag {{ action.extra_params | default('') }} $VERSION
