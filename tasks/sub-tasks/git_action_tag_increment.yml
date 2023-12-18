@@ -26,6 +26,8 @@
 
           export VERSION="$VNUM1.$VNUM2.$VNUM3"
       }
-      VERSION=$( git -C {{ repo.path }} describe --abbrev=0 --tags )
+      ## VERSION=$( git -C {{ repo.path }} describe --abbrev=0 --tags )
+      ## VERSION=$( git -C {{ repo.path }} tag --list --sort=-committerdate | head -n 1 )
+      VERSION=$( git -C {{ repo.path }} tag --list | sort -rn | head -n 1 )
       incver $VERSION
       git -C {{ repo.path }} tag {{ action.extra_params | default('') }} $VERSION
