@@ -54,9 +54,10 @@ git clone https://github.com/dginhoux/ansible_role.git_repos dginhoux.git_repos
 #### EXAMPLE PLAYBOOK
 
 ```yaml
-- hosts: all
-  roles:
-    - name: start role dginhoux.git_repos
+- name: Playbook
+  hosts: all
+  tasks:
+    - name: Start role dginhoux.git_repos
       ansible.builtin.include_role:
         name: dginhoux.git_repos
 ```
@@ -66,7 +67,9 @@ git clone https://github.com/dginhoux/ansible_role.git_repos dginhoux.git_repos
 
 #### DEFAULT VARIABLES
 
-Defaults variables defined in `defaults/main.yml` : 
+Defaults variables defined in `defaults/main.yml`
+
+#### EXAMPLES VARIABLES
 
 ```yaml
 git_repos_install_binary: true
