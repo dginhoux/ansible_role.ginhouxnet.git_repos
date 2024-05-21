@@ -16,4 +16,7 @@
   register: remote_add
   failed_when: remote_add.rc != 0 and remote_add.rc != 3
   ansible.builtin.command:
-    cmd: "git -C {{ repo.path }} remote add {{ remote.extra_params | default('') }} {{ remote.name }} {{ remote.url }}"
+    cmd:
+      - "git -C {{ repo.path }} remote add {{ remote.extra_params | default('') }} {{ remote.name }} {{ remote.url }}"
+      - "git -C {{ repo.path }} remote set-url {{ remote.extra_params | default('') }} {{ remote.name }} {{ remote.url }}"
+
