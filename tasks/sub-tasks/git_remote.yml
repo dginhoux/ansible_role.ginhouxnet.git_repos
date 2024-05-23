@@ -12,11 +12,17 @@
 - name: "Run git remote add for {{ repo.name }}"
   when:
     - remote.state == "present"
-  ignore_errors: "{{ remote.ignore_error | default('false') | bool }}"
-  register: remote_add
-  failed_when: remote_add.rc != 0 and remote_add.rc != 3
-  ansible.builtin.command:
-    cmd:
-      - "git -C {{ repo.path }} remote add {{ remote.extra_params | default('') }} {{ remote.name }} {{ remote.url }}"
-      - "git -C {{ repo.path }} remote set-url {{ remote.extra_params | default('') }} {{ remote.name }} {{ remote.url }}"
+  block:
+    - name: "Run git remote add for {{ repo.name }}"
+      ignore_errors: "{{ remote.ignore_error | default('false') | bool }}"
+      register: remote_add
+      failed_when: remote_add.rc != 0 and remote_add.rc != 3
+      ansible.builtin.command:
+        cmd: "git -C {{ repo.path }} remote add {{ remote.extra_params | default('') }} {{ remote.name }} {{ remote.url }}"
 
+    - name: "Run git remote set-url for {{ repo.name }}"
+      ignore_errors: "{{ remote.ignore_error | default('false') | bool }}"
+      register: remote_add
+      failed_when: remote_add.rc != 0 and remote_add.rc != 3
+      ansible.builtin.command:
+        cmd: "git -C {{ repo.path }} remote set-url {{ remote.extra_params | default('') }} {{ remote.name }} {{ remote.url }}"
